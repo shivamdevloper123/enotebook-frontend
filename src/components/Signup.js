@@ -2,15 +2,20 @@
 
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+// import dotenv from 'dotenv';
+// dotenv.config("./.env");
 
 const Signup = (props) => {
-    const [credentials, setCredentials] = useState({ name: "", email: "", password: "",cpassword:"" })
+    const [credentials, setCredentials] = useState({ name: "", email: "", password: "", cpassword: "" })
     let navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { name, email, password } = credentials;
-        const response = await fetch("http://localhost:8000/api/auth/createuser", {
+       
+        const apiUrl =  process.env.REACT_APP_BASE_URL || "https://e-notebook-shfw.onrender.com"//"http://localhost:8000" 
+       
+        const response = await fetch(`${apiUrl}/api/auth/createuser`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -22,9 +27,9 @@ const Signup = (props) => {
         if (json.success) {
             localStorage.setItem('token', json.authtoken);
             navigate("/");
-            props.showAlert("Account created successfully","success")
+            props.showAlert("Account created successfully", "success")
         } else {
-            props.showAlert("Invalid credential","danger")
+            props.showAlert("Invalid credential", "danger")
         }
     }
 
@@ -50,7 +55,7 @@ const Signup = (props) => {
                 </div>
                 <div className="mb-3">
                     <label htmlFor="cpassword" className="form-label">Confirm Password</label>
-                    <input type="password" className="form-control" id="cpassword" name="cpassword"  onChange={onChange} required minLength={5} />
+                    <input type="password" className="form-control" id="cpassword" name="cpassword" onChange={onChange} required minLength={5} />
                 </div>
                 <button type="submit" className="btn btn-primary">Sign Up</button>
             </form>

@@ -1,8 +1,11 @@
 import NoteContext from "./noteContext";
 import { useState } from "react";
-
+// import dotenv from 'dotenv';
+// dotenv.config("./.env");
 const NoteState = (props) => {
-  const host = "http://localhost:8000"
+  const host =      process.env.REACT_APP_BASE_URL ||   "https://e-notebook-shfw.onrender.com"  //"http://localhost:8000" 
+
+  console.log(host)
   const notesInitial = []
   const [notes, setNotes] = useState(notesInitial)
 
